@@ -16,6 +16,7 @@ from typing import Dict, List, Tuple, Union
 
 import yottadb
 from yottadb import YDBError
+from constants_config import *
 
 
 def parse_args() -> argparse.Namespace:
@@ -256,11 +257,12 @@ def main() -> int:
     limit = max(1, args.limit)
     prefix = normalize_prefix(args.prefix)
 
+    print(CYAN)
     print("=" * 72)
     print("02_list_globals.py - list globals via ^$GLOBAL (read-only)")
     print("=" * 72)
-    print(f"Limit:  {limit}")
-    print(f"Prefix: {prefix or '<none>'}")
+    print(f"  Limit: {limit}")
+    print(f" Prefix: {prefix or '<none>'}\n")
 
     # First attempt: SimpleAPI access to ^$GLOBAL.
     # In some VEHU/YDB bindings this raises INVVARNAME for "^$GLOBAL".
@@ -304,6 +306,9 @@ def main() -> int:
             return 1
         if dd_count == 0:
             print("No globals matched your filter.")
+
+        print("=" * 72)
+        print(RESET)
         return 0
 
     if shown == 0:
@@ -312,6 +317,9 @@ def main() -> int:
         print_aligned_rows(rows, raw=args.raw, start_index=1)
     if shown >= limit:
         print(f"... truncated at {limit}")
+
+    print("=" * 72)
+    print(RESET)
 
     return 0
 

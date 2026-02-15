@@ -1,0 +1,8 @@
+# -----------------------------------------------------------
+# Python Dependencies
+# -----------------------------------------------------------
+# Run this within the vehu-dev container to update the
+# Python runtime. Not applicable in local mac environment.
+# -----------------------------------------------------------
+
+yottadb

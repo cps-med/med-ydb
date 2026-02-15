@@ -1,12 +1,19 @@
-#!/usr/bin/env python3
+# -----------------------------------------------------------
+# app/03_explore_allowlisted.py
+# -----------------------------------------------------------
+
 """
-Phase 1 - Step 3: read-only global exploration with strict allowlist guardrails.
+Read-only global exploration with strict allowlist guardrails.
 
 Design goals:
 1) Never write/delete.
 2) Block non-allowlisted globals before any traversal.
 3) Limit breadth with --max-nodes.
 4) Keep output human-readable for interactive learning.
+
+To run:
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/03_explore_allowlisted.py'
 """
 
 import argparse
@@ -15,6 +22,8 @@ from typing import List, Optional
 
 import yottadb
 from yottadb import YDBError
+
+from constants_config import *
 
 # Strict starter allowlist for initial learning.
 # Expand this deliberately over time instead of allowing everything.
@@ -120,6 +129,8 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
 
+    print(YELLOW)
+
     if args.list_allowlist:
         print("Allowed globals:")
         for name in sorted(ALLOWED_GLOBALS):
@@ -157,6 +168,8 @@ def main() -> int:
 
     print("\nChild nodes")
     list_children(root, max_nodes=max_nodes, raw=args.raw)
+
+    print(RESET)
 
     return 0
 

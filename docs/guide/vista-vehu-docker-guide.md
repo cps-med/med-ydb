@@ -139,4 +139,43 @@ docker run -d \
   -p 5001:5001 \
   -v "$PWD/app:/opt/med-ydb/app:ro" \
   -v "$PWD/docs:/opt/med-ydb/docs:ro" \
+  -v "$PWD/exercise:/opt/med-ydb/exercise:ro" \
   worldvista/vehu:202504
+
+## February 15, 2026 notes
+
+To add the exercise/ directory to your docker run command, simply add another -v (volume mount) line. Here's your updated command:
+
+  docker run -d \
+    --platform linux/amd64 \
+    --name vehu-dev \
+    -p 2222:22 \
+    -p 8001:8001 \
+    -p 8080:8080 \
+    -p 9430:9430 \
+    -p 5001:5001 \
+    -v "$PWD/app:/opt/med-ydb/app:ro" \
+    -v "$PWD/docs:/opt/med-ydb/docs:ro" \
+    -v "$PWD/exercise:/opt/med-ydb/exercise:ro" \
+    worldvista/vehu:202504
+
+  Steps to Apply
+
+  1. Create the exercise/ directory (if it doesn't exist yet):
+  mkdir exercise
+  2. Stop and remove the existing container:
+  docker stop vehu-dev
+  docker rm vehu-dev
+  3. Run the updated docker command (shown above)
+  4. Verify the mount worked:
+  docker exec -it vehu-dev ls -la /opt/med-ydb/
+
+  4. You should see exercise/ listed alongside app/ and docs/
+
+  Running Scripts from exercise/
+
+  Your scripts in exercise/ will follow the same pattern as app/:
+
+  docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/exercise/my_learning_script.py'
+
+  The :ro (read-only) flag keeps your safety-first philosophy, ensuring the container can't accidentally modify your host files.

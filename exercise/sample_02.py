@@ -1,21 +1,13 @@
 # -----------------------------------------------------------
-# app/sample_02.py
+# exercise/sample_02.py
 # -----------------------------------------------------------
 
 """
 Read-only VistA global browser for YottaDB.
 
-Run inside the VEHU container, e.g.:
-  . /usr/local/etc/ydb_env_set && python3 /tmp/main.py --global ^DPT --max-nodes 25
-
-This is the read-only version (no writes/deletes).
 Quick run example in vehu:
-
-docker cp /tmp/main.py vehu:/tmp/main.py
-docker exec -it vehu bash -lc '. /usr/local/etc/ydb_env_set && python3 /tmp/main.py --show-release --global ^DPT --max-nodes 25'
-
-How I run sample_01.py:
-docker exec -it yottadb-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /data/app/your_script.py'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/exercise/sample_02.py --show-release --global ^DPT --max-nodes 25'
 """
 
 import argparse
@@ -23,6 +15,8 @@ import sys
 
 import yottadb
 from yottadb import YDBError
+
+from constants_config import *
 
 
 def _to_display(value, raw=False):
@@ -87,6 +81,8 @@ def parse_args(argv):
 def main(argv=None):
     args = parse_args(argv or sys.argv[1:])
 
+    print(CYAN)
+
     if args.show_release:
         try:
             release = yottadb.get("$ZYRELEASE")
@@ -107,6 +103,8 @@ def main(argv=None):
 
     print("\nChild nodes")
     list_children(root, max_nodes=max(1, args.max_nodes), raw=args.raw)
+
+    print(RESET)
 
 
 if __name__ == "__main__":

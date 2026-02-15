@@ -7,26 +7,26 @@
 ## Learning Objectives
 
 ### Phase 1: YottaDB Fundamentals (Current)
-- ✅ Understand global-based hierarchical database model
-- ✅ Master Key/subscript access patterns in Python
-- ✅ Learn intrinsic special variables (ISVs)
-- ✅ Recognize node vs. tree structure differences from traditional databases
+- 🔄 Understand global-based hierarchical database model
+- 🔄 Master Key/subscript access patterns in Python
+- 🔄 Learn intrinsic special variables (ISVs)
+- 🔄 Recognize node vs. tree structure differences from traditional databases
 - 🔄 Understand `$ORDER()` traversal patterns
 
 ### Phase 2: VistA Architecture (In Progress)
-- ✅ Understand FileMan as VistA's data abstraction layer
-- ✅ Learn to navigate the data dictionary (`^DIC`, `^DD`)
-- ✅ Understand the "0-node" metadata pattern
-- ✅ Learn VistA's self-documenting structure
+- 🔄 Understand FileMan as VistA's data abstraction layer
+- 🔄 Learn to navigate the data dictionary (`^DIC`, `^DD`)
+- 🔄 Understand the "0-node" metadata pattern
+- 🔄 Learn VistA's self-documenting structure
 - 🔄 Map major VistA subsystems (patient, providers, orders, pharmacy, lab)
 
 ### Phase 3: Core Files Deep Dive (Current)
-- ✅ Explore File #2 (PATIENT) structure in detail
-- ✅ Understand patient identifiers (IEN, SSN, ICN, DFN)
-- ✅ Parse demographics from `^DPT` global
-- ✅ Explore File #200 (NEW PERSON) for providers/users
-- ✅ Understand provider identifiers and person classes
-- 🔄 Trace pointers between File #2 and File #200
+- 🎯 Explore File #2 (PATIENT) structure in detail
+- 🎯 Understand patient identifiers (IEN, SSN, ICN, DFN)
+- 🎯 Parse demographics from `^DPT` global
+- 🎯 Explore File #200 (NEW PERSON) for providers/users
+- 🎯 Understand provider identifiers and person classes
+- 🎯 Trace pointers between File #2 and File #200
 - 🎯 Understand piece notation and field parsing across files
 - 🎯 Practice pointer traversal patterns (one-to-one, one-to-many)
 
