@@ -365,7 +365,7 @@ def find_files_by_prefix(prefix):
     for file_num in dic.subscripts:
         try:
             file_def = dic[file_num][0].value.decode('utf-8')
-            file_name = file_def.split("^")[0]
+            file_name = file_def.split("^")["0"]
             if file_name.startswith(prefix):
                 print(f"File #{file_num}: {file_name}")
         except YDBError:

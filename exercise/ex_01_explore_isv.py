@@ -1,14 +1,16 @@
 # ---------------------------------------------------------------------------
-# exercise/ex_01_1_isv.py
+# exercise/ex_01_explore_isv.py
 # ---------------------------------------------------------------------------
-# Explore Intrinsic Special Variables (ISVs)
-# ISVs are system-provided variables that start with $.
-# They provide runtime information.
-# ---------------------------------------------------------------------------
-# To run:
-#   docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-#   python3 /opt/med-ydb/exercise/ex_01_1_isv.py'
-# ---------------------------------------------------------------------------
+
+"""
+Explore Intrinsic Special Variables (ISVs)
+ISVs are system-provided variables that start with $.
+They provide runtime information.
+
+To run:
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/exercise/ex_01_explore_isv.py'
+"""
 
 import yottadb
 from datetime import datetime, timedelta

@@ -6,6 +6,9 @@
 # OS Enviroment files
 .env
 
+# Sample Output files
+output/
+
 # Python Environment files
 .venv/
 

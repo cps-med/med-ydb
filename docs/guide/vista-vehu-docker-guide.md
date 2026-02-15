@@ -157,6 +157,7 @@ To add the exercise/ directory to your docker run command, simply add another -v
     -v "$PWD/app:/opt/med-ydb/app:ro" \
     -v "$PWD/docs:/opt/med-ydb/docs:ro" \
     -v "$PWD/exercise:/opt/med-ydb/exercise:ro" \
+    -v "$PWD/output:/opt/med-ydb/output:rw" \
     worldvista/vehu:202504
 
   Steps to Apply

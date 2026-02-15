@@ -51,10 +51,14 @@ Concept:
 - Install inside container so VEHU Python can import it.
 - Container recreation requires reinstall unless you later use a custom image.
 
+**Note:** Also installing pandas
+
 Command:
 
 ```bash
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 -m pip install --user yottadb'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 -m pip install --user yottadb pandas'
+
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && pip3 list'
 ```
 
 ## Step 2 - Run environment sanity check
