@@ -1,0 +1,17 @@
+services:
+  vehu:
+    image: worldvista/vehu:202504
+    container_name: vehu-dev
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "2222:22"
+      - "5001:5001"
+      - "8001:8001"
+      - "8080:8080"
+      - "9430:9430"
+    volumes:
+      - ./app:/opt/med-ydb/app:ro
+      - ./docs:/opt/med-ydb/docs:ro
+      - ./src:/opt/med-ydb/src:ro
+      - ./tests:/opt/med-ydb/tests:ro

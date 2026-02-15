@@ -1,204 +1,130 @@
 # med-ydb
-YottaDB / M Language Learning and Experimentation
 
-## Goals
+Learning workspace for WorldVistA VEHU + YottaDB Python integration.
 
-- Learn core M language syntax and patterns
-- Build small routines and sample applications
-- Practice working with globals and persistent data
-- Maintain reproducible local development via Docker
+## Project Status
 
-## Project Layout
+Current focus is read-only backend exploration against a running VEHU container, using Python scripts mounted from this repo.
+
+- Runtime target: `worldvista/vehu:202504`
+- Container name in current docs/examples: `vehu-dev`
+- Host platform assumption: macOS on Apple Silicon (VEHU runs as `linux/amd64` via emulation)
+
+## Primary Goals
+
+1. **Learn YottaDB**: Understand global-based hierarchical database, Python integration patterns
+2. **Learn VistA Architecture**: Data structures, FileMan, patient data management
+3. **Learn M Language**: Develop reading literacy for VistA MUMPS code
+4. **Long-term**: Build modern Python/FastAPI web UI to replace "roll-and-scroll" interface
+
+## Quick Start
+
+### 1. Setup Environment
+
+Use these operational guides in order:
+
+1. `docs/guide/vista-vehu-docker-guide.md` - Docker container setup
+2. `docs/guide/yottadb-python-vehu-readonly-lab.md` - Python + YottaDB validation
+
+### 2. Learning Path
+
+For deep learning (recommended for understanding fundamentals):
+
+1. `docs/learn/00-learning-plan.md` - **Start here** - overview and progression
+2. `docs/learn/01-yottadb-fundamentals.md` - Database concepts (globals, keys, traversal)
+3. `docs/learn/02-fileman-architecture.md` - VistA's data abstraction layer
+4. `docs/learn/03-m-language-primer.md` - M language for Python developers
+5. `docs/learn/04-vista-patient-data.md` - Patient file (File #2) deep dive
+6. `docs/learn/04b-vista-new-person-file.md` - Provider/user file (File #200) deep dive
+7. `docs/learn/05-vista-pointers-relations.md` - How files connect via pointers
+8. `docs/learn/exercises/ex01-explore-file-2-and-200.md` - Comprehensive hands-on exercise
+9. `docs/learn/reference/m-to-python-patterns.md` - Quick lookup while reading M code
+
+## Current Python Exploration Scripts
+
+- `/Users/chuck/swdev/med/med-ydb/app/01_env_check.py`
+  - Runtime sanity check (Python + YottaDB + read-only probe)
+- `/Users/chuck/swdev/med/med-ydb/app/02_list_globals.py`
+  - Global listing with VEHU-compatible fallback paths
+- `/Users/chuck/swdev/med/med-ydb/app/03_explore_allowlisted.py`
+  - Read-only exploration with strict allowlist and max-node guardrails
+- `/Users/chuck/swdev/med/med-ydb/app/sample_01.py`
+  - Older experimental script (includes writes/deletes; not default path)
+- `/Users/chuck/swdev/med/med-ydb/app/sample_02.py`
+  - Earlier read-only sample (superseded by numbered scripts)
+
+## Repository Layout
 
 ```text
 med-ydb/
-├── README.md
-├── .gitignore
-├── docker-compose.yml
-├── .env.example
-├── app/
-│   ├── python_scripts.py
+├── README.md                    # This file
+├── CLAUDE.md                    # Project context for Claude AI sessions
+├── docker-compose.yaml          # Container orchestration
+├── app/                         # Python scripts (mounted into container)
+│   ├── 01_env_check.py         # Runtime sanity check
+│   ├── 02_list_globals.py      # Global discovery with fallbacks
+│   ├── 03_explore_allowlisted.py  # Safe read-only explorer
+│   ├── sample_01.py            # Early experiment (has writes!)
+│   └── sample_02.py            # Earlier read-only sample
 ├── docs/
-│   ├── getting-started.md
-│   ├── m-language-notes.md
-│   └── experiments-log.md
-├── src/
-│   ├── routines/
-│   ├── libraries/
-│   └── apps/
-├── tests/
-│   └── routines/
-├── scripts/
-│   ├── run.sh
-│   ├── shell.sh
-│   └── reset-data.sh
-└── ydb-data/
+│   ├── guide/                   # Operational how-to guides
+│   │   ├── vista-vehu-docker-guide.md
+│   │   ├── yottadb-python-vehu-readonly-lab.md
+│   │   ├── vista-first-session-lab.md
+│   │   └── ...
+│   ├── spec/                    # Reference specs and handoffs
+│   │   └── med-ydb-new-thread-handoff.md
+│   └── learn/                   # Learning materials (NEW!)
+│       ├── 00-learning-plan.md                # Start here - overview
+│       ├── 01-yottadb-fundamentals.md         # Database concepts
+│       ├── 02-fileman-architecture.md         # FileMan/data dictionary
+│       ├── 03-m-language-primer.md            # M language guide
+│       ├── 04-vista-patient-data.md           # File #2 (PATIENT)
+│       ├── 04b-vista-new-person-file.md       # File #200 (NEW PERSON)
+│       ├── 05-vista-pointers-relations.md     # Pointer relationships
+│       ├── exercises/
+│       │   └── ex01-explore-file-2-and-200.md # Patient & provider exercise
+│       └── reference/
+│           └── m-to-python-patterns.md        # M to Python quick lookup
+└── src/
+    └── routines/
+        └── HELLO.m              # Sample M routine
 ```
 
-## Prerequisites
+## Operational Notes
 
-- Docker Desktop for Mac
-- Apple Silicon Mac (M1/M2/M3/M4)
+1. Python must run inside VEHU runtime context for YottaDB access.
+2. `yottadb` Python package is container-local and must be installed in the container.
+3. Current VEHU runtime has Python `3.6.8`; scripts are written for that compatibility level.
+4. Read-only defaults are intentional: allowlist + bounded traversal.
 
-## Pull YottaDB Image (ARM64)
+## Learning Focus Areas
 
-```bash
-docker pull --platform linux/arm64 download.yottadb.com/yottadb/yottadb-debian:latest
-```
+Current learning priorities (see `docs/learn/00-learning-plan.md` for full plan):
 
-## Run YottaDB Container
+1. **YottaDB Fundamentals**: Global structure, Key objects, traversal patterns
+2. **VistA Architecture**: FileMan data dictionary (`^DIC`, `^DD`), self-documenting structure
+3. **Core VistA Files**:
+   - File #2 (PATIENT): Demographics, identifiers (IEN/DFN/SSN/ICN)
+   - File #200 (NEW PERSON): Providers/users, person classes, security keys
+4. **Pointer Relationships**: Patient→Provider connections, pointer traversal patterns
+5. **M Language**: Reading VistA MUMPS code, common patterns, function translation
 
-```bash
-mkdir -p "$PWD/ydb-data"
+## Roadmap
 
-docker run --rm -it \
-  --name yottadb-dev \
-  --platform linux/arm64 \
-  -v "$PWD/ydb-data:/data" \
-  download.yottadb.com/yottadb/yottadb-debian:latest
-```
+### Near-term (Learning Phase - Current)
+- Complete understanding of File #2 (PATIENT) structure
+- Map common VistA globals and FileMan files
+- Build M language reading literacy
+- Create custom exploration scripts as learning exercises
 
-## Verify Native ARM64 Runtime
+### Medium-term
+- Explore other VistA domains (orders, pharmacy, lab)
+- Learn write patterns with test globals
+- Understand FileMan API for validated updates
 
-Inside the container:
-
-```bash
-uname -m
-```
-
-Expected: `aarch64`
-
-## First M Routine
-
-Inside the container:
-
-```bash
-mkdir -p /data/r
-cat > /data/r/HELLO.m <<'EOF'
-HELLO ;
-  WRITE "Hello from med-ydb!",!
-  QUIT
-EOF
-```
-
-Run:
-
-```bash
-yottadb -run HELLO
-```
-
-## Compile Behavior
-
-For normal development, YottaDB generally compiles/links routines as needed when run.  
-Optional explicit compile:
-
-```bash
-$ydb_dist/mumps /data/r/HELLO.m
-```
-
-## Development Notes
-
-- Keep reusable routines in `src/libraries/`
-- Keep app entry routines in `src/apps/`
-- Keep disposable experiments in `examples/`
-- Add regression checks under `tests/routines/`
-- Treat `ydb-data/` as local runtime data (not source code)
-
-## Suggested .gitignore
-
-```gitignore
-ydb-data/
-.env
-.DS_Store
-```
-
-## Recommended Dev Workflow (Bind Mounts)
-
-Run from project root (`~/swdev/med/med-ydb`):
-
-```bash
-mkdir -p "$PWD/src/routines" "$PWD/ydb-data"
-
-docker run -d \
-docker run -d \
-  --name yottadb-dev \
-  --platform linux/arm64 \
-  --entrypoint /bin/bash \
-  -v "$PWD/ydb-data:/data" \
-  -v "$PWD/src/routines:/data/r" \
-  download.yottadb.com/yottadb/yottadb-debian:latest \
-  -lc 'sleep infinity'
-```
-
-Why this pattern:
-- Source code stays on host in git (`src/routines`)
-- Runtime/persistent data stays in `ydb-data` (gitignored)
-- No manual `docker cp` loop
-
-## Container Lifecycle Note
-
-- Use **no `--rm`** for reusable containers you manage with Docker Desktop Start/Stop.
-- Use `--rm` only for temporary one-off sessions.
-
-## Verify Native ARM64 Runtime
-
-```bash
-docker exec -it yottadb-dev uname -m
-```
-
-Expected: `aarch64`
-
-Check YottaDB:
-
-```bash
-docker exec -it yottadb-dev yottadb -version
-```
-
-## First M Routine
-
-Create on host:
-
-```bash
-cat > "$PWD/src/routines/HELLO.m" <<'EOF'
-HELLO ;
-  WRITE "Hello from med-ydb!",!
-  QUIT
-EOF
-```
-
-Run from host via container:
-
-```bash
-docker exec -it yottadb-dev yottadb -run HELLO
-```
-
-## Compile Behavior
-
-For normal development, YottaDB typically compiles/links routines as needed when run.
-
-Optional explicit compile:
-
-```bash
-docker exec -it yottadb-dev bash -lc '$ydb_dist/mumps /data/r/HELLO.m'
-```
-
-## Common Commands
-
-Open shell:
-
-```bash
-docker exec -it yottadb-dev bash
-```
-
-Stop/start:
-
-```bash
-docker stop yottadb-dev
-docker start yottadb-dev
-```
-
-Remove container:
-
-```bash
-docker rm -f yottadb-dev
-```
+### Long-term
+- Harden read-only logic into reusable Python modules
+- Add minimal FastAPI endpoints with guardrails
+- Build HTMX-based web UI for patient data browsing
+- Create derived container image with Python dependencies
