@@ -303,19 +303,11 @@ When a user logs into VistA:
 ### Step 1: List Users in Your VEHU
 
 ```bash
-# First, add ^VA to your allowlist
-# Edit app/03_explore_allowlisted.py:
-# ALLOWED_GLOBALS = {
-#     "^DIC",
-#     "^DPT",
-#     "^VA",  # Add this
-# }
-
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/03_explore_allowlisted.py --global "^VA(200" --max-nodes 10'
+  python3 /opt/med-ydb/app/03_explore_allowlisted.py --global ^VA --subscript 200 --max-nodes 10'
 ```
 
-Note the special syntax: `"^VA(200"` to access the specific file number under `^VA`.
+Use `--global ^VA --subscript 200` to inspect File #200 under the `^VA` global root.
 
 ### Step 2: Examine a User's 0-Node
 

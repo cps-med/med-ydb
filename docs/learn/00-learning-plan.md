@@ -6,43 +6,46 @@
 
 ## Learning Objectives
 
-### Phase 1: YottaDB Fundamentals (Current)
-- 🔄 Understand global-based hierarchical database model
-- 🔄 Master Key/subscript access patterns in Python
-- 🔄 Learn intrinsic special variables (ISVs)
-- 🔄 Recognize node vs. tree structure differences from traditional databases
-- 🔄 Understand `$ORDER()` traversal patterns
+### Phase 1: YottaDB Fundamentals
+- ✅ Understand global-based hierarchical database model
+- ✅ Master Key/subscript access patterns in Python
+- ✅ Learn intrinsic special variables (ISVs)
+- ✅ Recognize node vs. tree structure differences from traditional databases
+- ✅ Understand `$ORDER()` traversal patterns
 
-### Phase 2: VistA Architecture (In Progress)
-- 🔄 Understand FileMan as VistA's data abstraction layer
-- 🔄 Learn to navigate the data dictionary (`^DIC`, `^DD`)
-- 🔄 Understand the "0-node" metadata pattern
-- 🔄 Learn VistA's self-documenting structure
+### Phase 2: VistA Architecture
+- ✅ Understand FileMan as VistA's data abstraction layer
+- ✅ Learn to navigate the data dictionary (`^DIC`, `^DD`)
+- ✅ Understand the "0-node" metadata pattern
+- ✅ Learn VistA's self-documenting structure
 - 🔄 Map major VistA subsystems (patient, providers, orders, pharmacy, lab)
 
-### Phase 3: Core Files Deep Dive (Current)
-- 🎯 Explore File #2 (PATIENT) structure in detail
-- 🎯 Understand patient identifiers (IEN, SSN, ICN, DFN)
-- 🎯 Parse demographics from `^DPT` global
-- 🎯 Explore File #200 (NEW PERSON) for providers/users
-- 🎯 Understand provider identifiers and person classes
-- 🎯 Trace pointers between File #2 and File #200
-- 🎯 Understand piece notation and field parsing across files
-- 🎯 Practice pointer traversal patterns (one-to-one, one-to-many)
+### Phase 3: Core Files Deep Dive
+- ✅ Explore File #2 (PATIENT) structure in detail
+- ✅ Understand patient identifiers (IEN, SSN, ICN, DFN)
+- ✅ Parse demographics from `^DPT` global
+- ✅ Explore File #200 (NEW PERSON) for providers/users
+- ✅ Understand provider identifiers and person classes
+- ✅ Trace pointers between File #2 and File #200
+- ✅ Understand piece notation and field parsing across files
+- ✅ Practice pointer traversal patterns (one-to-one, one-to-many)
 
-### Phase 4: M Language Literacy (Parallel to Phase 2-3)
-- 🎯 Read basic M syntax and control structures
-- 🎯 Understand M-specific idioms (`$ORDER`, `$PIECE`, `$GET`, etc.)
-- 🎯 Translate common M patterns to Python equivalents
-- 🎯 Read existing VistA routines for patient data access
+### Phase 4: M Language Literacy
+- 🔄 Read basic M syntax and control structures
+- 🔄 Understand M-specific idioms (`$ORDER`, `$PIECE`, `$GET`, etc.)
+- 🔄 Translate common M patterns to Python equivalents
+- 🔄 Read existing VistA routines for patient data access
 
-### Phase 5: VistA RPC Interface (Current)
-- 🎯 Understand RPC Broker protocol and architecture
-- 🎯 Explore RPC definitions in File #8994
-- 🎯 Trace RPCs to underlying M routines
-- 🎯 Learn common patient/order/clinical RPCs
-- 🎯 Understand authentication and context requirements
-- 🎯 Compare RPC approach vs. direct global access
+### Phase 5: VistA RPC Interface
+- ✅ Understand RPC Broker protocol and architecture
+- ✅ Explore RPC definitions in File #8994
+- ✅ Trace RPCs to underlying M routines
+- ✅ Learn common patient/order/clinical RPCs
+- 🔄 Understand authentication and context requirements
+- ✅ Compare RPC approach vs. direct global access
+- ✅ Define starter security model for direct global exploration
+- ✅ Learn JLV's multi-site aggregation patterns
+- ✅ Implement patient data aggregator using RPC patterns
 
 ### Phase 6: Write Operations (Future)
 - 🔲 Safe write patterns with test globals (`^ZZTEST`)
@@ -67,11 +70,13 @@ Follow these documents and exercises in order:
 ### 1. YottaDB Fundamentals
 - **Read**: `01-yottadb-fundamentals.md`
 - **Practice**: Run `app/01_env_check.py` with different globals
-- **Exercise**: `exercises/ex01-explore-key-patterns.md`
+- **Exercise**: Run `exercise/ex_01_explore_isv.py` to explore ISVs and HOROLOG format
 
 ### 2. FileMan Architecture
 - **Read**: `02-fileman-architecture.md`
 - **Practice**: Run `app/02_list_globals.py` and study the fallback mechanisms
+- **Exercise**: Run `exercise/ex_02_explore_files.py` to discover files by prefix
+- **Exercise**: Run `exercise/ex_03_list_all_files.py` to generate complete FileMan catalog
 - **Hands-on**: Use the exercises in the doc to discover files and fields
 
 ### 3. M Language Primer
@@ -86,12 +91,12 @@ Follow these documents and exercises in order:
 
 ### 4b. VistA NEW PERSON File (File #200)
 - **Read**: `04b-vista-new-person-file.md`
-- **Practice**: Add `^VA` to allowlist, explore `^VA(200,`
+- **Practice**: Run `app/03_explore_allowlisted.py --global ^VA --subscript 200`
 - **Hands-on**: Create the user parser from the doc
 
 ### 5. VistA Pointers and Relations
 - **Read**: `05-vista-pointers-relations.md`
-- **Exercise**: `exercises/ex01-explore-file-2-and-200.md` (comprehensive hands-on)
+- **Exercise**: `exercise/ex01-explore-file-2-and-200.md` (comprehensive hands-on)
 - **Practice**: Patient→Provider pointer traversal
 
 ### 6. VistA RPC Broker Interface
@@ -99,6 +104,17 @@ Follow these documents and exercises in order:
 - **Practice**: Run `app/04_rpc_explorer.py --prefix ORWPT --limit 10`
 - **Hands-on**: Inspect RPC definitions, trace RPCs to M routines
 - **Experiment**: Call simple RPCs in M direct mode
+
+### 7. JLV and Multi-Site RPC Patterns
+- **Read**: `07-jlv-rpc-patterns.md`
+- **Practice**: Run `app/vista_data_service.py` to see VistaDataService simulation
+- **Practice**: Run `app/patient_aggregator.py --patient-id 1` to aggregate patient data
+- **Hands-on**: Study how JLV aggregates data from multiple RPCs and sites
+
+### 8. Security Model for Python + VistA Access
+- **Read**: `08-vista-security-model.md`
+- **Practice**: Run `app/05_security_explorer.py --global ^DPT --max-nodes 10`
+- **Practice**: Compare default redacted output vs `--include-phi` behavior
 
 ---
 
@@ -108,12 +124,25 @@ Follow these documents and exercises in order:
 - `/docs/guide/vista-vehu-docker-guide.md` - How to run VEHU container
 - `/docs/guide/yottadb-python-vehu-readonly-lab.md` - Step-by-step Python setup
 - `/docs/spec/med-ydb-new-thread-handoff.md` - Technical context from previous work
+- `/docs/learn/08-vista-security-model.md` - Security boundaries and safe access patterns
 
 ### Scripts You've Built
+
+**Core Exploration Scripts:**
 - `app/01_env_check.py` - Teaches: ISVs, Key objects, node access
 - `app/02_list_globals.py` - Teaches: Multiple discovery methods, FileMan structure, M fallback
 - `app/03_explore_allowlisted.py` - Teaches: Safe exploration, allowlists, bounds
 - `app/04_rpc_explorer.py` - Teaches: RPC definitions, tracing to M routines, VistA's API layer
+- `app/05_security_explorer.py` - Teaches: Security-first exploration, redaction defaults, explicit unsafe opt-in
+
+**Advanced Integration Scripts:**
+- `app/vista_data_service.py` - Teaches: JLV's VistaDataService pattern, RPC execution simulation
+- `app/patient_aggregator.py` - Teaches: Multi-RPC data aggregation, JLV pattern implementation
+
+**Exercise Scripts:**
+- `exercise/ex_01_explore_isv.py` - Practice: Reading ISVs, HOROLOG conversion
+- `exercise/ex_02_explore_files.py` - Practice: FileMan file discovery by prefix
+- `exercise/ex_03_list_all_files.py` - Practice: Complete FileMan catalog with pandas output
 
 ### External Resources
 - YottaDB Documentation: https://docs.yottadb.com/
@@ -204,12 +233,14 @@ docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
 2. Read `03-m-language-primer.md` to prepare for reading VistA code
 3. Read `04-vista-patient-data.md` to focus on your primary interest area
 4. Read `06-vista-rpc-broker.md` to understand VistA's API layer (bridges to modern UI)
+5. Read `08-vista-security-model.md` and run `app/05_security_explorer.py`
 
 **This Week**:
 - Complete Exercise 1: Map File #2 structure
 - Complete Exercise 2: Parse a patient 0-node
 - Explore RPC definitions using `app/04_rpc_explorer.py`
 - Trace an RPC to its M routine and understand what it does
+- Practice security-first exploration with `app/05_security_explorer.py`
 
 **This Month**:
 - Build a custom patient data browser script
@@ -254,5 +285,15 @@ Use this space (or create dated journal files) to record insights:
 - Discovered that `02_list_globals.py` has three fallback mechanisms - shows defensive programming
 - FileMan stores global roots in `^DIC(file#, 0, "GL")` - this is the key to mapping files to globals
 - VEHU's Python 3.6 lacks modern yottadb binding features - explains compatibility workarounds in scripts
+
+**2026-02-15**:
+- Created JLV simulation scripts (`vista_data_service.py`, `patient_aggregator.py`) - demonstrates multi-RPC aggregation patterns
+- Implemented FileMan exploration exercises showing subscript handling patterns
+- Completed Phase 1 (YottaDB Fundamentals) - ISV exploration, HOROLOG conversion working
+- Completed Phase 2 (VistA Architecture) - FileMan discovery scripts with pandas output
+- Completed Phase 3 (Core Files Deep Dive) - Patient/Provider pointer traversal exercises
+- Completed most of Phase 5 (RPC Interface) - RPC explorer, JLV patterns, patient aggregation
+- Key insight: JLV's VistaDataService pattern is elegant abstraction for multi-site queries
+- Exercise 01 (File #2 and #200 exploration) provides comprehensive pointer traversal practice
 
 *(Continue adding dated entries as you learn)*

@@ -29,7 +29,7 @@ This is a personal learning project for understanding YottaDB and the VistA (Vet
 
 ### Docker Setup
 - Managed via `docker-compose.yaml` at repo root
-- Bind mounts: `./app`, `./docs`, `./src`, `./tests` → `/opt/med-ydb/*` (read-only)
+- Bind mounts: `./app`, `./docs`, `./exercise`, `./output`, `./src`, `./tests` → `/opt/med-ydb/*` (read-only except output/)
 - Ports: 2222 (SSH), 5001 (HL7), 8001, 8080, 9430 (VEHU services)
 
 ### Dependencies (Container-Local)
@@ -44,12 +44,24 @@ med-ydb/
 ├── CLAUDE.md                    # This file
 ├── README.md                    # Project overview
 ├── docker-compose.yaml          # Container orchestration
-├── app/                         # Python scripts (mounted into container)
+├── app/                         # Production-quality Python scripts (mounted)
 │   ├── 01_env_check.py         # Runtime sanity check
 │   ├── 02_list_globals.py      # Global discovery with fallbacks
 │   ├── 03_explore_allowlisted.py # Safe read-only explorer
+│   ├── 04_rpc_explorer.py      # RPC definition explorer
+│   ├── vista_data_service.py   # JLV VistaDataService simulation
+│   ├── patient_aggregator.py   # Multi-RPC patient data aggregator
+│   ├── constants_config.py     # Shared configuration
 │   ├── sample_01.py            # Early experiment (has writes!)
 │   └── sample_02.py            # Early read-only sample
+├── exercise/                    # Learning exercises (mounted)
+│   ├── ex_01_explore_isv.py    # ISV exploration
+│   ├── ex_02_explore_files.py  # FileMan file discovery
+│   ├── ex_03_list_all_files.py # Complete FileMan catalog
+│   ├── ex01-explore-file-2-and-200.md # Comprehensive pointer exercise
+│   ├── constants_config.py     # Shared configuration
+│   ├── sample_01.py            # Sample from early experiments
+│   └── sample_02.py            # Sample from early experiments
 ├── docs/
 │   ├── guide/                   # Operational how-to guides
 │   │   ├── vista-vehu-docker-guide.md
@@ -57,10 +69,19 @@ med-ydb/
 │   │   └── ...
 │   ├── spec/                    # Reference specs and handoffs
 │   │   └── med-ydb-new-thread-handoff.md
-│   └── learn/                   # Learning materials and exercises
+│   └── learn/                   # Learning materials
 │       ├── 00-learning-plan.md
-│       ├── exercises/
+│       ├── 01-yottadb-fundamentals.md
+│       ├── 02-fileman-architecture.md
+│       ├── 03-m-language-primer.md
+│       ├── 04-vista-patient-data.md
+│       ├── 04b-vista-new-person-file.md
+│       ├── 05-vista-pointers-relations.md
+│       ├── 06-vista-rpc-broker.md
+│       ├── 07-jlv-rpc-patterns.md
 │       └── reference/
+│           └── m-to-python-patterns.md
+├── output/                      # Generated output files
 └── src/
     └── routines/
         └── HELLO.m              # Sample M routine
@@ -75,10 +96,20 @@ Scripts must run inside VEHU container with YottaDB environment:
 # Standard pattern
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/SCRIPT.py [args]'
 
-# Examples
+# Core exploration examples
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/01_env_check.py'
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/02_list_globals.py --prefix ^D --limit 50'
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/03_explore_allowlisted.py --global ^DPT --max-nodes 20'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT --limit 10'
+
+# JLV pattern examples
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/vista_data_service.py'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/app/patient_aggregator.py --patient-id 1'
+
+# Learning exercises
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/exercise/ex_01_explore_isv.py'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/exercise/ex_02_explore_files.py'
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && python3 /opt/med-ydb/exercise/ex_03_list_all_files.py'
 ```
 
 ## Current Learning Focus
@@ -199,9 +230,15 @@ docker exec -it vehu-dev su - vehu
 ## Project History
 
 - **Initial commit**: Basic repo structure
-- **Current state**: Three working read-only Python exploration scripts with comprehensive guides
-- **Previous work**: Validated YottaDB Python integration in VEHU container, installed build dependencies
-- **Documentation**: Operational guides complete, now building learning materials
+- **Early phase**: Three core read-only Python exploration scripts with comprehensive guides
+- **Mid phase**: Validated YottaDB Python integration in VEHU container, installed build dependencies
+- **Current state**:
+  - Seven learning documents covering YottaDB → FileMan → M → Patient Data → RPCs → JLV patterns
+  - Six production-quality scripts in `app/` including JLV simulation
+  - Three exercise scripts in `exercise/` with hands-on learning materials
+  - Comprehensive pointer traversal exercises (File #2 ↔ File #200)
+  - Patient data aggregator demonstrating multi-RPC patterns
+  - Phases 1-3 complete, Phase 5 mostly complete, Phase 4 (M language) ongoing
 
 ## Questions to Avoid Assumptions
 

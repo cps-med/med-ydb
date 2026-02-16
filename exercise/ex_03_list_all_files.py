@@ -48,9 +48,12 @@ def main():
             file_def = file_def_value.decode('utf-8')
             file_name = file_def.split("^")[0]
 
-            # Get global location
-            gl_node_value = dic[file_num]["0"].value
-            gl_node = gl_node_value.decode('utf-8')
+            # Get global root location from ^DIC(file#,0,"GL")
+            try:
+                gl_node_value = dic[file_num]["0"]["GL"].value
+                gl_node = gl_node_value.decode('utf-8')
+            except YDBError:
+                gl_node = ""
 
             # Add row to data
             data.append({
