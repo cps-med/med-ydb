@@ -269,6 +269,39 @@ key2 = yottadb.Key("^DPT")[123]  # Converted to "123"
 key3 = yottadb.Key("^DPT")[str(patient_id)]
 ```
 
+### ⚠️ IMPORTANT: Always Use String Subscripts
+
+**Best Practice**: Always use **string subscripts**, especially when working with subscripts returned from `.subscripts` iterator.
+
+**Common Gotcha**:
+```python
+# ❌ WRONG - Using integer subscript
+key = yottadb.Key("^XWB")["8994"]
+zeroth_node = key[0].value  # ERROR: 'subsarray' argument invalid
+
+# ✅ CORRECT - Using string subscript
+zeroth_node = key["0"].value  # Works correctly
+```
+
+**When working with subscripts from iteration**:
+```python
+# ❌ WRONG - Decoding subscript before reuse
+for file_num in dic.subscripts:
+    file_num_str = file_num.decode('utf-8')  # Convert to string
+    value = dic[file_num_str]["0"].value     # ERROR with nested subscripts!
+
+# ✅ CORRECT - Keep subscript in original format
+for file_num in dic.subscripts:
+    value = dic[file_num]["0"].value         # Works correctly
+    # Only decode for display:
+    print(f"File #{file_num.decode('utf-8')}")
+```
+
+**Key Rules**:
+1. **Subscripts from `.subscripts`** → Use directly, decode only for display
+2. **Numeric subscripts** → Use strings: `["0"]`, `["1"]`, `["2"]`
+3. **When in doubt** → Use explicit strings: `[str(value)]`
+
 ---
 
 ## Sparse Arrays: Why Globals are Efficient
@@ -415,6 +448,31 @@ except UnicodeDecodeError:
     text = repr(value)  # Show raw bytes
 ```
 
+### `TypeError: 'subsarray' argument invalid: item N is not a bytes-like object`
+**Meaning**: Using wrong subscript type (integer instead of string, or decoded subscript)
+
+**Solution**: Always use string subscripts, keep `.subscripts` results in original format
+
+```python
+# ❌ WRONG - These cause the error
+key[0]                              # Integer subscript
+key[file_num.decode('utf-8')]       # Decoded subscript
+
+# ✅ CORRECT - Use these patterns
+key["0"]                            # String subscript
+key[file_num]                       # Keep subscript from .subscripts as-is
+
+# Example from iteration
+for file_num in dic.subscripts:
+    # Use subscript directly
+    value = dic[file_num]["0"].value
+
+    # Only decode for display
+    print(f"File: {file_num.decode('utf-8')}")
+```
+
+**See also**: `exercise/ex_02_explore_files.py` for working pattern
+
 ---
 
 ## Key Takeaways
@@ -422,10 +480,11 @@ except UnicodeDecodeError:
 1. **Globals are hierarchical trees**, not flat key-value pairs
 2. **Nodes can have values AND children** - this is different from most databases
 3. **Subscripts are always sorted** in collation order (numeric then string)
-4. **Sparse structure** - only existing nodes consume space
-5. **In-process access** - YottaDB runs in your Python process, not as a separate server
-6. **Use `subscripts` iterator** for traversal (equivalent to M's `$ORDER()`)
-7. **Always bound your traversals** to prevent exploring massive globals
+4. **Subscripts must be strings** - use `["0"]` not `[0]`, keep `.subscripts` results in original format
+5. **Sparse structure** - only existing nodes consume space
+6. **In-process access** - YottaDB runs in your Python process, not as a separate server
+7. **Use `subscripts` iterator** for traversal (equivalent to M's `$ORDER()`)
+8. **Always bound your traversals** to prevent exploring massive globals
 
 ---
 

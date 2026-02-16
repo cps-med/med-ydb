@@ -36,14 +36,22 @@
 - 🎯 Translate common M patterns to Python equivalents
 - 🎯 Read existing VistA routines for patient data access
 
-### Phase 5: Write Operations (Future)
+### Phase 5: VistA RPC Interface (Current)
+- 🎯 Understand RPC Broker protocol and architecture
+- 🎯 Explore RPC definitions in File #8994
+- 🎯 Trace RPCs to underlying M routines
+- 🎯 Learn common patient/order/clinical RPCs
+- 🎯 Understand authentication and context requirements
+- 🎯 Compare RPC approach vs. direct global access
+
+### Phase 6: Write Operations (Future)
 - 🔲 Safe write patterns with test globals (`^ZZTEST`)
 - 🔲 FileMan API for validated writes
 - 🔲 Transaction patterns and error handling
-- 🔲 Calling VistA business logic routines
+- 🔲 Calling VistA business logic routines via RPCs
 
-### Phase 6: Modern UI (Long-term Goal)
-- 🔲 FastAPI endpoints wrapping YottaDB access
+### Phase 7: Modern UI (Long-term Goal)
+- 🔲 FastAPI endpoints wrapping VistA RPCs
 - 🔲 HTMX + Jinja2 for progressive enhancement
 - 🔲 Modern patient data browser
 - 🔲 Replace "roll-and-scroll" interface
@@ -86,6 +94,12 @@ Follow these documents and exercises in order:
 - **Exercise**: `exercises/ex01-explore-file-2-and-200.md` (comprehensive hands-on)
 - **Practice**: Patient→Provider pointer traversal
 
+### 6. VistA RPC Broker Interface
+- **Read**: `06-vista-rpc-broker.md`
+- **Practice**: Run `app/04_rpc_explorer.py --prefix ORWPT --limit 10`
+- **Hands-on**: Inspect RPC definitions, trace RPCs to M routines
+- **Experiment**: Call simple RPCs in M direct mode
+
 ---
 
 ## Key Resources
@@ -99,6 +113,7 @@ Follow these documents and exercises in order:
 - `app/01_env_check.py` - Teaches: ISVs, Key objects, node access
 - `app/02_list_globals.py` - Teaches: Multiple discovery methods, FileMan structure, M fallback
 - `app/03_explore_allowlisted.py` - Teaches: Safe exploration, allowlists, bounds
+- `app/04_rpc_explorer.py` - Teaches: RPC definitions, tracing to M routines, VistA's API layer
 
 ### External Resources
 - YottaDB Documentation: https://docs.yottadb.com/
@@ -173,6 +188,13 @@ docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
 - [ ] You can trace patient → provider → clinic relationships
 - [ ] You understand how VistA maintains patient identity
 
+### You'll Know You Understand VistA RPC Interface When:
+- [ ] You can explain the difference between RPCs and direct global access
+- [ ] You can find RPC definitions in File #8994 and trace them to M routines
+- [ ] You understand RPC Broker protocol and authentication/context requirements
+- [ ] You can identify common RPC namespaces (ORWPT, XUS, ORWDX)
+- [ ] You understand when to use RPCs vs. direct global access for applications
+
 ---
 
 ## Next Steps
@@ -181,11 +203,13 @@ docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
 1. Read `01-yottadb-fundamentals.md` to solidify database concepts
 2. Read `03-m-language-primer.md` to prepare for reading VistA code
 3. Read `04-vista-patient-data.md` to focus on your primary interest area
+4. Read `06-vista-rpc-broker.md` to understand VistA's API layer (bridges to modern UI)
 
 **This Week**:
 - Complete Exercise 1: Map File #2 structure
 - Complete Exercise 2: Parse a patient 0-node
-- Add `^DD` to your allowlist and explore field definitions
+- Explore RPC definitions using `app/04_rpc_explorer.py`
+- Trace an RPC to its M routine and understand what it does
 
 **This Month**:
 - Build a custom patient data browser script

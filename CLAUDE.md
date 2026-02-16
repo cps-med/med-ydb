@@ -142,6 +142,26 @@ Expand deliberately as learning progresses.
 - Reference M language patterns when relevant
 - Use type hints (3.6-compatible: `from typing import ...`)
 
+### YottaDB Python Subscript Rules (CRITICAL)
+**Always use string subscripts in YottaDB Python code:**
+
+```python
+# ✅ CORRECT patterns
+key["0"]              # Use string for numeric subscripts
+key["NAME"]           # String subscripts
+dic[file_num]["0"]    # Keep subscript from .subscripts in original format
+
+# ❌ WRONG patterns - will cause 'subsarray' argument invalid errors
+key[0]                # Integer subscript fails
+dic[file_num.decode('utf-8')]["0"]  # Decoding before reuse fails in nested access
+```
+
+**Rules when iterating subscripts:**
+1. Use subscripts from `.subscripts` directly (don't decode first)
+2. Only decode subscripts for display/logging purposes
+3. Always use string literals for known subscripts: `["0"]`, `["1"]`, `["B"]`
+4. See `exercise/ex_02_explore_files.py` for reference pattern
+
 ### When Explaining VistA/M
 - Provide side-by-side M vs Python comparisons
 - Explain FileMan abstractions (files, fields, pointers)
