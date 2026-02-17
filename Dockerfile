@@ -21,7 +21,7 @@ RUN dnf install -y python3.11 python3.11-devel
 RUN ln -sf /usr/bin/python3.11 /usr/bin/python3
 
 # Install Dependencies from requirements.txt
-# We source the YDB environment so the yottadb-python wheel can find the C headers
+# Source the YDB environment so the yottadb-python wheel can find the C headers
 COPY requirements.txt /tmp/requirements.txt
 RUN python3 -m ensurepip && \
     python3 -m pip install --upgrade pip && \

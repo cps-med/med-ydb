@@ -15,27 +15,14 @@ docker exec -it vehu-311 python3 /opt/med-ydb/cli/01_env_check.py --probe-global
 docker exec -it vehu-311 python3 /opt/med-ydb/cli/01_env_check.py --probe-global DPT
 """
 
+import os
 import argparse
 import platform
 import sys
-from typing import Optional
+from typing import Optional, List, Any
 import yottadb
 from yottadb import YDBError
 from constants_config import *
-
-
-def normalize_global_name(name: str) -> str:
-    return name if name.startswith("^") else f"^{name}"
-
-
-def to_display(value: Optional[bytes]) -> str:
-    if value is None:
-        return "<no value>"
-    try:
-        return value.decode("utf-8")
-    except UnicodeDecodeError:
-        return repr(value)
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -48,57 +35,79 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
+def normalize_global_name(name: str) -> str:
+    return name if name.startswith("^") else f"^{name}"
+
+def to_display(value: Optional[bytes]) -> str:
+    if value is None:
+        return "<no value>"
+    try:
+        return value.decode("utf-8")
+    except UnicodeDecodeError:
+        return repr(value)
+
+def probe_child_node(key: yottadb.Key, subscript: Any, label: str) -> None:
+    """
+    Fetches and prints the status and value of a specific child node.
+    """
+    print(f"{label:>13} child: {key.name}({subscript!r})")
+    
+    child_node = key[subscript]
+    val_display = to_display(child_node.value) if child_node.has_value else "<none>"
+    print(f"{label:>7} child value: {val_display}")
+
 
 def main() -> int:
     args = parse_args()
     probe_global = normalize_global_name(args.probe_global)
 
-    print(YELLOW)
-    print("=" * 72)
-    print("                      VEHU runtime sanity check")
-    print("=" * 72)
-    print(f"  Python executable: {sys.executable}")
-    print(f"     Python version: {platform.python_version()}")
-    print(f"       Probe global: {probe_global}")
+    print(f"\n{YELLOW}{'=' * 82}")
+    print(f"{CYAN}{'VEHU runtime sanity check (v2.0.0+)':>58}{RESET}")
+    print(f"{YELLOW}{'=' * 82}")
+    print(f"{'Current PWD:':>20} {os.getcwd()}")
+    print(f"{'System PATH:':>20} {os.environ.get('PATH', '<not set>')}")
+    print(f"{'Python executable:':>20} {sys.executable}")
+    print(f"{'Python version:':>20} {platform.python_version()}")
+    print(f"{'User (Env Var):':>20} {os.environ.get('USER', 'unknown')}")
+    print("-" * 82)
+    print(f"{'Probe global:':>20} {probe_global}")
 
     try:
-        release = yottadb.get("$ZYRELEASE")
-        print(f"    YottaDB release: {to_display(release)}")
-    except YDBError as exc:
-        print(f"    YottaDB release: <error: {exc}>")
-        return 1
+        release = yottadb.get("$ZYRELEASE").decode("utf-8")
+        print(f"    YottaDB release: {release}")
 
-    key = yottadb.Key(probe_global)
-    try:
-        # Compatibility note:
-        # Older yottadb Python bindings (like those paired with Python 3.6 in VEHU)
-        # may not expose Key.has_value / Key.has_tree. We use read attempts instead.
-        root_value = key.value
-        print(f"         Root value: {to_display(root_value)}")
-    except YDBError as exc:
-        print(f"         Root value: <error reading value: {exc}>")
-        return 1
+        key = yottadb.Key(probe_global)
 
-    try:
-        first_subscript = None
-        for sub in key.subscripts:
-            first_subscript = sub
-            break
-        if first_subscript is None:
-            print("First child:       <none>")
+        if key.has_value:
+            print(f"{'Root value:':>20} {to_display(key.value)}")
         else:
-            print(f"        First child: {probe_global}({first_subscript!r})")
-            child_value = key[first_subscript].value
-            print(f"  First child value: {to_display(child_value)}")
+            print(f"{'Root value:':>20} <no value (node exists: {key.has_subtree})>")
+
+        # Get list of subscripts
+        children = list(key.subscripts)
+        
+        if not children:
+            print("         First child: <none>")
+        else:
+            # Define the ordinal labels we want to display
+            labels = ["First", "Second", "Third"]
+            
+            # Iterate through the labels and children simultaneously
+            for i, label in enumerate(labels):
+                if i < len(children):
+                    probe_child_node(key, children[i], label)
+                else:
+                    print(f"{label:>13} child: <none>")
+
     except YDBError as exc:
-        print(f"Error reading first child for {probe_global}: {exc}")
+        print(f"\n[!] YottaDB Error: {exc}")
         return 1
 
-    print("\n             Status: runtime looks good for read-only exploration.")
-    print("=" * 72)
+    print("-" * 82)
+    print(f"{'Status:':>20} runtime looks good for read-only exploration.")
+    print("=" * 82)
     print(RESET)
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

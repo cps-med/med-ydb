@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 from constants_config import *
 
 
-def as_text(value):
+def as_text(value) ->str:
     """Convert YottaDB bytes to displayable string."""
     try:
         return value.decode("utf-8")
@@ -23,7 +23,7 @@ def as_text(value):
         return repr(value)  # Fallback to raw representation
 
 
-def horolog_to_datetime(horolog_str):
+def horolog_to_datetime(horolog_str: str) ->str:
     """
     Convert HOROLOG format to readable date/time.
     HOROLOG format: "days,seconds"
@@ -46,20 +46,18 @@ def horolog_to_datetime(horolog_str):
         return "<invalid HOROLOG format>"
 
 
-print(YELLOW)
-print("=" * 75)
-print("                YottaDB Intrinsic Special Variables (ISVs)")
-print("=" * 75)
-print("  ZYRELEASE:", as_text(yottadb.get("$ZYRELEASE")))
-print("   ZVERSION:", as_text(yottadb.get("$ZVERSION")))
-print("        JOB:", as_text(yottadb.get("$JOB")))
+print(f"\n{YELLOW}{'=' * 75}")
+print(f"{CYAN}{'YottaDB Intrinsic Special Variables (ISVs)':>58}")
+print(f"{YELLOW}{'=' * 75}")
+print(f"{'ZYRELEASE:':>13}", as_text(yottadb.get("$ZYRELEASE")))
+print(f"{'ZVERSION:':>13}", as_text(yottadb.get("$ZVERSION")))
+print(f"{'JOB:':>13}", as_text(yottadb.get("$JOB")))
 
 storage_raw = as_text(yottadb.get("$STORAGE"))
 storage_num = int(storage_raw)
-print("    STORAGE:", f"{storage_num:,}")
+print(f"{'STORAGE:':>13} {storage_num:,}")
 
 horolog_raw = as_text(yottadb.get("$HOROLOG"))
-print("    HOROLOG:", horolog_raw)
-print("  (decoded):", horolog_to_datetime(horolog_raw))
-print("=" * 75)
-print(RESET)
+print(f"{'HOROLOG:':>13} horolog_raw")
+print(f"{'(decoded):':>13} {horolog_to_datetime(horolog_raw)}")
+print(f"{'=' * 75}{RESET}\n")

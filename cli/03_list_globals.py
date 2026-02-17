@@ -31,8 +31,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--limit",
         type=int,
-        default=125,
-        help="Maximum number of global names to print (default: 125).",
+        default=50,
+        help="Maximum number of global names to print (default: 50).",
     )
     parser.add_argument(
         "--prefix",
@@ -262,10 +262,9 @@ def main() -> int:
     limit = max(1, args.limit)
     prefix = normalize_prefix(args.prefix)
 
-    print(YELLOW)
-    print("=" * 72)
-    print("02_list_globals.py - list globals via ^$GLOBAL (read-only)")
-    print("=" * 72)
+    print(f"\n{YELLOW}{'=' * 82}")
+    print(f"{CYAN}{'List globals via ^$GLOBAL (read-only)':>58}")
+    print(f"{YELLOW}{'=' * 82}\n")
     print(f"  Limit: {limit}")
     print(f" Prefix: {prefix or '<none>'}\n")
 
@@ -295,7 +294,7 @@ def main() -> int:
             "SimpleAPI listing via ^$GLOBAL failed: {0}".format(exc),
             file=sys.stderr,
         )
-        print("Falling back to read-only M direct-mode listing...\n")
+        print("\nFalling back to read-only M direct-mode listing...\n")
         m_count = list_globals_via_m_direct(prefix=prefix, limit=limit, raw=args.raw)
         if m_count < 0:
             return 1
@@ -323,7 +322,7 @@ def main() -> int:
     if shown >= limit:
         print(f"... truncated at {limit}")
 
-    print("=" * 72)
+    print("=" * 82)
     print(RESET)
 
     return 0
