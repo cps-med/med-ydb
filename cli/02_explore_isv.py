@@ -1,15 +1,13 @@
 # ---------------------------------------------------------------------------
 # exercise/ex_01_explore_isv.py
 # ---------------------------------------------------------------------------
+# Explore Intrinsic Special Variables (ISVs)
+# ISVs are system-provided variables that start with $.
+# They provide runtime information.
+# ---------------------------------------------------------------------------
 
 """
-Explore Intrinsic Special Variables (ISVs)
-ISVs are system-provided variables that start with $.
-They provide runtime information.
-
-To run:
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/exercise/ex_01_explore_isv.py'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/02_explore_isv.py
 """
 
 import yottadb
@@ -48,7 +46,9 @@ def horolog_to_datetime(horolog_str):
         return "<invalid HOROLOG format>"
 
 
-print(CYAN)
+print(YELLOW)
+print("=" * 75)
+print("                YottaDB Intrinsic Special Variables (ISVs)")
 print("=" * 75)
 print("  ZYRELEASE:", as_text(yottadb.get("$ZYRELEASE")))
 print("   ZVERSION:", as_text(yottadb.get("$ZVERSION")))

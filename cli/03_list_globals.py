@@ -1,11 +1,16 @@
-#!/usr/bin/env python3
-"""
-Phase 1 - Step 2: list available global names (read-only, bounded).
+# ---------------------------------------------------------------------------
+# cli/03_list_globals.py
+# ---------------------------------------------------------------------------
+# Phase 1 - Step 2: list available global names (read-only, bounded).
+#
+# Concept:
+# - VistA data lives in globals (e.g. ^DPT, ^DIC).
+# - The YottaDB intrinsic global ^$GLOBAL provides global-name discovery.
+# - We keep this bounded with --limit so first runs stay fast and safe.
+# ---------------------------------------------------------------------------
 
-Concept:
-- VistA data lives in globals (e.g. ^DPT, ^DIC).
-- The YottaDB intrinsic global ^$GLOBAL provides global-name discovery.
-- We keep this bounded with --limit so first runs stay fast and safe.
+"""
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/03_list_globals.py
 """
 
 import argparse
@@ -257,7 +262,7 @@ def main() -> int:
     limit = max(1, args.limit)
     prefix = normalize_prefix(args.prefix)
 
-    print(CYAN)
+    print(YELLOW)
     print("=" * 72)
     print("02_list_globals.py - list globals via ^$GLOBAL (read-only)")
     print("=" * 72)

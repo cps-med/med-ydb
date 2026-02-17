@@ -15,6 +15,7 @@ output/
 # Other python excludes
 __pycache__/
 .pytest_cache/
+*.py[cod]
 
 # YottaDB Data
 ydb-data/

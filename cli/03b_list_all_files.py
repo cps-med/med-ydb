@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# exercise/list_all_files.py
+# cli/03b_list_all_files.py
 # -----------------------------------------------------------
 
 """
@@ -7,9 +7,8 @@ Discovering FileMan Structure
 List All Files
 
 Prerequisite:
-docker exec -it vehu-dev bash -lc 'python3 -m pip install --user yottadb pandas'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/03b_list_all_files.py
 
-To run:
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
 python3 /opt/med-ydb/exercise/ex_03_list_all_files.py'
 """

@@ -1,49 +1,46 @@
-# -----------------------------------------------------------
-# app/04_rpc_explorer.py
-# -----------------------------------------------------------
+# ---------------------------------------------------------------------
+# app/05_rpc_explorer.py
+# ---------------------------------------------------------------------
+# Explore VistA Remote Procedure Call (RPC) definitions in File #8994.
+#
+# Design goals:
+# 1) Read-only exploration of RPC metadata
+# 2) Discover RPCs by name pattern (prefix search)
+# 3) Show RPC structure: name, M routine, parameters, return type
+# 4) Trace RPC to underlying M code location
+# 5) Educational output for learning VistA's API layer
+# ---------------------------------------------------------------------
 
 """
-Explore VistA Remote Procedure Call (RPC) definitions in File #8994.
+# Run Example
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/05_rpc_explorer.py --prefix ORWPT --limit 10
 
-Design goals:
-1) Read-only exploration of RPC metadata
-2) Discover RPCs by name pattern (prefix search)
-3) Show RPC structure: name, M routine, parameters, return type
-4) Trace RPC to underlying M code location
-5) Educational output for learning VistA's API layer
+# List patient-related RPCs
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/05_rpc_explorer.py --prefix ORWPT
 
-To run:
+# List authentication RPCs
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT --limit 10'
+python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix XUS'
 
-Examples:
-  # List patient-related RPCs
-  docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT'
+# Get details on a specific RPC
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/04_rpc_explorer.py --name "ORWPT SELECT"'
 
-  # List authentication RPCs
-  docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix XUS'
+# List all RPCs (bounded by --limit)
+docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/04_rpc_explorer.py --limit 50'
 
-  # Get details on a specific RPC
-  docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --name "ORWPT SELECT"'
+# See rich details on authentication RPC
+docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/04_rpc_explorer.py --name "XUS SIGNON SETUP"'
 
-  # List all RPCs (bounded by --limit)
-  docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --limit 50'
+# Explore patient RPCs with --detail flag
+docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT --limit 5 --detail'
 
-  # See rich details on authentication RPC
-  docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --name "XUS SIGNON SETUP"'
-
-  # Explore patient RPCs with --detail flag
-  docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT --limit 5 --detail'
-
-  # Find order-related RPCs
-  docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-  python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWDX --limit 10'
+# Find order-related RPCs
+docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
+python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWDX --limit 10'
 """
 
 import argparse

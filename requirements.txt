@@ -5,5 +5,5 @@
 # Python runtime. Not applicable in local mac environment.
 # -----------------------------------------------------------
 
+pandas>=2.1.0,<3.0.0
 yottadb
-pandas

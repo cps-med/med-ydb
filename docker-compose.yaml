@@ -1,0 +1,23 @@
+services:
+  vista-dev:
+    build: .
+    container_name: vehu-311
+    platform: linux/amd64
+    ports:
+      - "9000:9000"
+      - "8010:8010"
+    volumes:
+      - ./cli:/opt/med-ydb/cli:ro
+      - ./output:/opt/med-ydb/output:rw
+    environment:
+      - ydb_gbldir=/home/vehu/g/vehu.gld
+      - ydb_dist=/opt/yottadb/r2.00_x86_64
+      - ydb_routines=/opt/med-ydb/cli /home/vehu/r /home/vehu/p /opt/yottadb/r2.00_x86_64/libyottadbutil.so
+    entrypoint: >
+      /bin/bash -c "source /home/vehu/etc/env && 
+      tail -f /dev/null"
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+    restart: unless-stopped

@@ -1,14 +1,12 @@
-# -----------------------------------------------------------
-# exercise/ex_02_explore_files.py
-# -----------------------------------------------------------
+# ---------------------------------------------------------------------
+# cli/03a_explore_files.py
+# ---------------------------------------------------------------------
+# Discover All Files Starting with “P”
+# Write a script to list all FileMan files whose names start with “X”
+# ---------------------------------------------------------------------
 
 """
-Discover All Files Starting with “P”
-Write a script to list all FileMan files whose names start with “P”
-
-To run:
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/exercise/ex_02_explore_files.py'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/03a_explore_files.py
 """
 
 # Import dependencies
@@ -42,6 +40,7 @@ def find_files_by_prefix(prefix):
 
 def main():
     find_files_by_prefix("A")
+    find_files_by_prefix("N")
     find_files_by_prefix("P")
 
 

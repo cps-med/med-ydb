@@ -1,29 +1,18 @@
 # -----------------------------------------------------------
-# app/01_env)check.py
+# cli/01_env_check.py
+# -----------------------------------------------------------
+# Confirm Python + YottaDB runtime context inside vehu-311
 # -----------------------------------------------------------
 
 """
-Confirm Python + YottaDB runtime context inside VEHU.
-
-This script is intentionally read-only and minimal. It helps you validate:
- 1) Python is available in the running container.
- 2) The yottadb module imports successfully.
- 3) The YottaDB engine is reachable from this process.
- 4) A known global can be inspected without writing.
-
-To Run:
-
 # Use default global (^DIC)
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/01_env_check.py'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/01_env_check.py
 
 # Test against patient file (i.e., "probe" the global)
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/01_env_check.py --probe-global ^DPT'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/01_env_check.py --probe-global ^DPT
 
 # Can omit the ^ prefix (normalize_global_name adds it)
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/01_env_check.py --probe-global DPT'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/01_env_check.py --probe-global DPT
 """
 
 import argparse
@@ -64,9 +53,9 @@ def main() -> int:
     args = parse_args()
     probe_global = normalize_global_name(args.probe_global)
 
-    print(CYAN)
+    print(YELLOW)
     print("=" * 72)
-    print("01_env_check.py - VEHU runtime sanity check (read-only)")
+    print("                      VEHU runtime sanity check")
     print("=" * 72)
     print(f"  Python executable: {sys.executable}")
     print(f"     Python version: {platform.python_version()}")
