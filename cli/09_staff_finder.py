@@ -1,10 +1,10 @@
 # -----------------------------------------------------------
-# cli/08_staff_finder.py
+# cli/09_staff_finder.py
 # -----------------------------------------------------------
 
 """
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_staff_finder.py 5
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_staff_finder.py --show 10
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/09_staff_finder.py 5
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/09_staff_finder.py --show 10
 """
 import argparse
 import sys

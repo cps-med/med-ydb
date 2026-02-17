@@ -1,13 +1,13 @@
 # -----------------------------------------------------------
-# cli/07_patient_finder_v3.py
+# cli/08_patient_finder.py
 # -----------------------------------------------------------
 
 """
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/07_patient_finder.py
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/07_patient_finder.py ?
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/07_patient_finder.py 1
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/07_patient_finder.py --show 15
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/07_patient_finder.py --show 5 --start 10
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_patient_finder.py
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_patient_finder.py ?
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_patient_finder.py 1
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_patient_finder.py --show 15
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/08_patient_finder.py --show 5 --start 10
 """
 
 import argparse

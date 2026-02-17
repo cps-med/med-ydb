@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# cli/03b_list_all_files.py
+# cli/04_list_all_files.py
 # -----------------------------------------------------------
 
 """
@@ -7,10 +7,7 @@ Discovering FileMan Structure
 List All Files
 
 Prerequisite:
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/03b_list_all_files.py
-
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/exercise/ex_03_list_all_files.py'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/04_list_all_files.py
 """
 
 # Imports
@@ -43,6 +40,7 @@ def main():
         try:
             file_def_value = dic[file_num]["0"].value
             if not file_def_value:
+                print(f"\n{RED}No file_def_value for {dic[file_num]}{RESET}")
                 continue
             file_def = file_def_value.decode('utf-8')
             file_name = file_def.split("^")[0]
@@ -50,6 +48,9 @@ def main():
             # Get global root location from ^DIC(file#,0,"GL")
             try:
                 gl_node_value = dic[file_num]["0"]["GL"].value
+                if not gl_node_value:
+                    print(f"\n{RED}No gl_node_value for {dic[file_num]}{RESET}")
+                    continue
                 gl_node = gl_node_value.decode('utf-8')
             except YDBError:
                 gl_node = ""
@@ -67,8 +68,9 @@ def main():
     df = pd.DataFrame(data)
 
     # Display to terminal
-    print("\nFileMan Files Summary:")
-    print("=" * 22)
+    print(f"\n{YELLOW}{'=' * 82}")
+    print(f"{'FileMan Files Summary':>51}")
+    print(f"{'=' * 82}{RESET}")
     print(df.to_string(index=False))
     print(f"\nTotal files found: {len(df)}")
 

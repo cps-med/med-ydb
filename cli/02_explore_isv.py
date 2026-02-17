@@ -45,19 +45,22 @@ def horolog_to_datetime(horolog_str: str) ->str:
     except (ValueError, AttributeError):
         return "<invalid HOROLOG format>"
 
+def main():
+    print(f"\n{YELLOW}{'=' * 75}")
+    print(f"{CYAN}{'YottaDB Intrinsic Special Variables (ISVs)':>58}")
+    print(f"{YELLOW}{'=' * 75}")
+    print(f"{'ZYRELEASE:':>13}", as_text(yottadb.get("$ZYRELEASE")))
+    print(f"{'ZVERSION:':>13}", as_text(yottadb.get("$ZVERSION")))
+    print(f"{'JOB:':>13}", as_text(yottadb.get("$JOB")))
 
-print(f"\n{YELLOW}{'=' * 75}")
-print(f"{CYAN}{'YottaDB Intrinsic Special Variables (ISVs)':>58}")
-print(f"{YELLOW}{'=' * 75}")
-print(f"{'ZYRELEASE:':>13}", as_text(yottadb.get("$ZYRELEASE")))
-print(f"{'ZVERSION:':>13}", as_text(yottadb.get("$ZVERSION")))
-print(f"{'JOB:':>13}", as_text(yottadb.get("$JOB")))
+    storage_raw = as_text(yottadb.get("$STORAGE"))
+    storage_num = int(storage_raw)
+    print(f"{'STORAGE:':>13} {storage_num:,}")
 
-storage_raw = as_text(yottadb.get("$STORAGE"))
-storage_num = int(storage_raw)
-print(f"{'STORAGE:':>13} {storage_num:,}")
+    horolog_raw = as_text(yottadb.get("$HOROLOG"))
+    print(f"{'HOROLOG:':>13} horolog_raw")
+    print(f"{'(decoded):':>13} {horolog_to_datetime(horolog_raw)}")
+    print(f"{'=' * 75}{RESET}\n")
 
-horolog_raw = as_text(yottadb.get("$HOROLOG"))
-print(f"{'HOROLOG:':>13} horolog_raw")
-print(f"{'(decoded):':>13} {horolog_to_datetime(horolog_raw)}")
-print(f"{'=' * 75}{RESET}\n")
+if __name__ == "__main__":
+    raise SystemExit(main())

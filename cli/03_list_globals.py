@@ -25,6 +25,12 @@ from constants_config import *
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses command-line arguments for the VEHU YottaDB validation utility.
+
+    Returns:
+        argparse.Namespace: An object containing the parsed arguments.
+    """
     parser = argparse.ArgumentParser(
         description="List global names from ^$GLOBAL (read-only)."
     )

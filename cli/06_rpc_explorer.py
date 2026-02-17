@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# app/05_rpc_explorer.py
+# app/06_rpc_explorer.py
 # ---------------------------------------------------------------------
 # Explore VistA Remote Procedure Call (RPC) definitions in File #8994.
 #
@@ -12,35 +12,14 @@
 # ---------------------------------------------------------------------
 
 """
-# Run Example
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/05_rpc_explorer.py --prefix ORWPT --limit 10
-
-# List patient-related RPCs
-docker exec -it vehu-311 python3 /opt/med-ydb/cli/05_rpc_explorer.py --prefix ORWPT
-
-# List authentication RPCs
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix XUS'
-
-# Get details on a specific RPC
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --name "ORWPT SELECT"'
-
-# List all RPCs (bounded by --limit)
-docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --limit 50'
-
-# See rich details on authentication RPC
-docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --name "XUS SIGNON SETUP"'
-
-# Explore patient RPCs with --detail flag
-docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWPT --limit 5 --detail'
-
-# Find order-related RPCs
-docker exec vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
-python3 /opt/med-ydb/app/04_rpc_explorer.py --prefix ORWDX --limit 10'
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --limit 50
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --prefix ORWPT
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --prefix ORWPT --limit 10
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --name "ORWPT SELECT"
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --prefix ORWPT --limit 5 --detail
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --prefix ORWDX --limit 10
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --prefix XUS
+docker exec -it vehu-311 python3 /opt/med-ydb/cli/06_rpc_explorer.py --name "XUS SIGNON SETUP"
 """
 
 import argparse
@@ -372,7 +351,7 @@ Examples:
             print_rpc_summary(rpc)
 
     if len(rpcs) >= args.limit:
-        print(f"\n... output truncated at {args.limit} RPCs (use --limit to see more)")
+        print(f"\n... output truncated at {args.limit} RPCs (use --limit to see more)\n")
 
 
 if __name__ == "__main__":

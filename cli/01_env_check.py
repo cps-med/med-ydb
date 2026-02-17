@@ -25,6 +25,13 @@ from yottadb import YDBError
 from constants_config import *
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses command-line arguments for the VEHU YottaDB validation utility.
+
+    Returns:
+        argparse.Namespace: An object containing the parsed arguments, 
+            specifically the global name to be probed.
+    """
     parser = argparse.ArgumentParser(
         description="Validate VEHU Python + YottaDB runtime access (read-only)."
     )
@@ -36,9 +43,21 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 def normalize_global_name(name: str) -> str:
+    """
+    Normalizes a global name by ensuring that it is formatted as "^{name}"
+
+    Returns:
+        str: A properly formatted global name.
+    """
     return name if name.startswith("^") else f"^{name}"
 
 def to_display(value: Optional[bytes]) -> str:
+    """
+    Converts raw bytes to a human-readable string for display.
+
+    Returns "<no value>" if input is None, the UTF-8 decoded string if 
+    successful, or the formal representation (repr) if decoding fails.
+    """
     if value is None:
         return "<no value>"
     try:
@@ -74,7 +93,7 @@ def main() -> int:
 
     try:
         release = yottadb.get("$ZYRELEASE").decode("utf-8")
-        print(f"    YottaDB release: {release}")
+        print(f"{'YottaDB release:':>20} {release}")
 
         key = yottadb.Key(probe_global)
 

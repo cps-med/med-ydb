@@ -1,30 +1,30 @@
-# -----------------------------------------------------------
-# app/patient_aggregator.py
-# -----------------------------------------------------------
+# ---------------------------------------------------------------------------------
+# cli/10_jlv_patient_aggregator.py
+# ---------------------------------------------------------------------------------
+# Patient Data Aggregator - demonstrates JLV's multi-RPC data aggregation pattern
+
+# This script shows how JLV aggregates patient data by calling multiple RPCs
+# across different clinical domains:
+# - Demographics (ORWPT* RPCs)
+# - Medications (ORWPS* RPCs)
+# - Laboratory (ORQQAL* RPCs)
+# - Vitals (ORQQVI* RPCs)
+# - Problem List, Allergies, etc.
+
+# In production JLV:
+# - Calls these RPCs on MULTIPLE VistA sites
+# - Aggregates results into a unified patient view
+# - Handles data conflicts and versioning
+# - Provides caching and performance optimization
+
+# This simulation:
+# - Calls RPCs on single VEHU instance
+# - Demonstrates the aggregation pattern
+# - Shows error handling
+# - Educational purposes only
+# ---------------------------------------------------------------------------------
 
 """
-Patient Data Aggregator - demonstrates JLV's multi-RPC data aggregation pattern
-
-This script shows how JLV aggregates patient data by calling multiple RPCs
-across different clinical domains:
-- Demographics (ORWPT* RPCs)
-- Medications (ORWPS* RPCs)
-- Laboratory (ORQQAL* RPCs)
-- Vitals (ORQQVI* RPCs)
-- Problem List, Allergies, etc.
-
-In production JLV:
-- Calls these RPCs on MULTIPLE VistA sites
-- Aggregates results into a unified patient view
-- Handles data conflicts and versioning
-- Provides caching and performance optimization
-
-This simulation:
-- Calls RPCs on single VEHU instance
-- Demonstrates the aggregation pattern
-- Shows error handling
-- Educational purposes only
-
 To run:
 docker exec -it vehu-dev bash -lc '. /usr/local/etc/ydb_env_set && \
 python3 /opt/med-ydb/app/patient_aggregator.py --patient-id 1'
