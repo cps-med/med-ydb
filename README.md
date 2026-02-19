@@ -128,3 +128,10 @@ Current learning priorities (see `docs/learn/00-learning-plan.md` for full plan)
 - Add minimal FastAPI endpoints with guardrails
 - Build HTMX-based web UI for patient data browsing
 - Create derived container image with Python dependencies
+
+## Docker Commands
+
+Rebuild and Replace docker image via Docker and docker-compose.yaml
+```bash
+docker compose up -d --build
+```

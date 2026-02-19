@@ -7,3 +7,15 @@
 
 pandas>=2.1.0,<3.0.0
 yottadb
+
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+
+pydantic-settings>=2.0
+
+python-multipart
+python-dotenv
+
+psutil

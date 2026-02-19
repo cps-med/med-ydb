@@ -1,5 +1,6 @@
 services:
   vista-dev:
+    image: med-ydb-vista-dev
     build: .
     container_name: vehu-311
     platform: linux/amd64
@@ -7,12 +8,15 @@ services:
       - "9000:9000"
       - "8010:8010"
     volumes:
+      - ./app:/opt/med-ydb/app:ro
       - ./cli:/opt/med-ydb/cli:ro
       - ./output:/opt/med-ydb/output:rw
     environment:
       - ydb_gbldir=/home/vehu/g/vehu.gld
       - ydb_dist=/opt/yottadb/r2.00_x86_64
       - ydb_routines=/opt/med-ydb/cli /home/vehu/r /home/vehu/p /opt/yottadb/r2.00_x86_64/libyottadbutil.so
+      - CONTAINER_NAME=vehu-311
+      - IMAGE_NAME=med-ydb-vista-dev
     entrypoint: >
       /bin/bash -c "source /home/vehu/etc/env && 
       tail -f /dev/null"

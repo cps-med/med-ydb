@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Env Check{% endblock %}
+
+{% block content %}
+    <h1>Environment Status</h1>
+    
+    <p>
+        <strong>System:</strong> {{ system }} &nbsp; | &nbsp; 
+        <span style="color: var(--color-primary);">{{ status }}</span>
+    </p>
+
+    <div class="dashboard-grid">
+        <div class="stat-box">
+            <label>CPU Usage</label>
+            <span>{{ cpu_usage }}</span>
+        </div>
+        <div class="stat-box">
+            <label>Memory Usage</label>
+            <span>{{ memory_usage }}</span>
+        </div>
+        <div class="stat-box">
+            <label>Host Uptime</label>
+            <span>{{ uptime }}</span>
+        </div>
+        <div class="stat-box">
+            <label>Disk Free</label>
+            <span>{{ disk_free }}</span>
+        </div>
+        <div class="stat-box">
+            <label>Process User</label>
+            <span>{{ process_user }}</span>
+        </div>
+        <div class="stat-box">
+            <label>Working Directory</label>
+            <span>{{ working_dir }}</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="dashboard-grid">
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>Container Name</label>
+            <span>{{ container_name }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>Image Name</label>
+            <span>{{ image_name }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>Platform</label>
+            <span>{{ platform }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>Architecture</label>
+            <span>{{ architecture }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>Python</label>
+            <span>{{ python }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>YDB Global Directory</label>
+            <span>{{ ydb_gbldir }}</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="dashboard-grid">
+        
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>{{ probe_global }} Root Value</label>
+            <span>{{ ydb_val_1 }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>First Child</label>
+            <span>{{ ydb_val_2 }}</span>
+        </div>
+        <div class="stat-box" style="border-left-color: var(--color-hr);">
+            <label>First Child Value</label>
+            <span>{{ ydb_val_3 }}</span>
+        </div>
+    </div>
+
+    {% if ydb_error %}
+    <p><strong>YottaDB Probe Error:</strong> {{ ydb_error }}</p>
+    {% endif %}
+
+    <footer>
+        <p>Last Check: {{ timestamp }}</p>
+        <p>(c) Chuck Sylvester, 2026. All rights reserved.</p>
+    </footer>
+{% endblock %}

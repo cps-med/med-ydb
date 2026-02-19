@@ -19,6 +19,7 @@ import os
 import argparse
 import platform
 import sys
+from itertools import islice
 from typing import Optional, List, Any
 import yottadb
 from yottadb import YDBError
@@ -102,21 +103,22 @@ def main() -> int:
         else:
             print(f"{'Root value:':>20} <no value (node exists: {key.has_subtree})>")
 
-        # Get list of subscripts
-        children = list(key.subscripts)
-        
-        if not children:
+        # Only sample the first few children to keep this check fast and safe.
+        # Converting `key.subscripts` to a full list can be expensive for large
+        # globals (e.g., ^DPT), because it materializes every first-level node.
+        sampled_children = list(islice(key.subscripts, 3))
+
+        if not sampled_children:
             print("         First child: <none>")
         else:
             # Define the ordinal labels we want to display
             labels = ["First", "Second", "Third"]
-            
-            # Iterate through the labels and children simultaneously
-            for i, label in enumerate(labels):
-                if i < len(children):
-                    probe_child_node(key, children[i], label)
-                else:
-                    print(f"{label:>13} child: <none>")
+
+            # Print discovered children, then explicitly show missing slots.
+            for i, subscript in enumerate(sampled_children):
+                probe_child_node(key, subscript, labels[i])
+            for label in labels[len(sampled_children):]:
+                print(f"{label:>13} child: <none>")
 
     except YDBError as exc:
         print(f"\n[!] YottaDB Error: {exc}")
